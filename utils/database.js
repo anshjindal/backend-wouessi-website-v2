@@ -18,6 +18,8 @@ const connectToDB = async (dbName) => {
         })
 
         connections[dbName] = connection;
+        
+
 
         console.log(`MongoDB connected to ${dbName}`);
 
