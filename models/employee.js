@@ -63,8 +63,6 @@ const EmployeeSchema = mongoose.Schema({
   password: {
     type: String,
     required: [true, "Password is required"],
-    minlength: [6, "Password must be at least 6 characters"],
-    maxlength: [12, "Password must not exceed 12 characters"],
   },
   addresses: [
     {
@@ -89,8 +87,9 @@ const EmployeeSchema = mongoose.Schema({
     default: null,
   },
   designations: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "designation",
+    type: String,
+    ref: "designations",
+    required: true,
   },
   roleRef: {
     type: mongoose.Schema.Types.ObjectId,
@@ -113,10 +112,10 @@ const EmployeeSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["Active", "Inactive", "Terminated"],
-    default: "Active",
+    enum: ["active", "inactive", "terminated"],
+    default: "active",
   },
-  AccountNumber: {
+  accountNumber: {
     type: String,
     unique: true,
     required: [true, "Bank Account Number is Mandatory"],
@@ -192,7 +191,23 @@ const EmployeeSchema = mongoose.Schema({
   repManagerRef: {
     type: String,
     required: true,
-    default: null,
+    
+  },
+  healthCardNo:{
+    type: String,
+    default: ""
+  },
+  familyPractitionerName :{
+    type : String,
+    default: ""
+  },
+  practitionerClinicName : {
+    type : String,
+    defautlt: ""
+  },
+  practitionerName : {
+    type : String,
+    default: ""
   },
   createdAt: {
     type: Date,

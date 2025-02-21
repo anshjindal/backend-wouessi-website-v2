@@ -11,7 +11,7 @@ const login = async (empId, password, req) => {
   console.log(employeeId);
 
  
-  const employee = await Employee.findOne({ empId: employeeId, status: "Active" });
+  const employee = await Employee.findOne({ empId: employeeId, status: "active" });
 
   console.log(employee);
   if (!employee) throw new Error("No employee exists with this Employee ID");
@@ -48,3 +48,4 @@ const login = async (empId, password, req) => {
 };
 
 module.exports = { login };
+
