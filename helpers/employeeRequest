@@ -1,0 +1,154 @@
+class EmployeeRequest {
+    constructor({
+      firstName,
+      middleName,
+      lastName,
+      email,
+      workMail,
+      contactNumber,
+      dateOfBirth,
+      gender,
+      bloodGroup,
+      dateOfJoin,
+      imageFolder,
+      dateOfExit,
+      roleRef,
+      departmentId,
+      designations,
+      employmentType,
+      workLocation,
+      status,
+      accountNumber,
+      transitNumber,
+      institutionNumber,
+      bankName,
+      interacId,
+      sin,
+      taxCode,
+      workPermitDetails,
+      prDetails,
+      citizenshipId,
+      maritalStatus,
+      emergencyContactName,
+      emergencyContactNumber,
+      emergencyContactRelation,
+      repManagerRef,
+      healthCardNo,
+      familyPractitionerName,
+      practitionerClinicName,
+      practitionerName,
+      logId,
+      addresses
+    }) {
+      this.firstName = firstName;
+      this.middleName = middleName;
+      this.lastName = lastName;
+      this.email = email;
+      this.workMail = workMail;
+      this.contactNumber = contactNumber;
+      this.dateOfBirth = dateOfBirth;
+      this.gender = gender;
+      this.bloodGroup = bloodGroup;
+      this.dateOfJoin = dateOfJoin;
+      this.imageFolder = imageFolder || null;
+      this.dateOfExit = dateOfExit || null;
+      this.roleRef = roleRef;
+      this.departmentId = departmentId;
+      this.designations=designations;
+      this.employmentType = employmentType;
+      this.workLocation = workLocation;
+      this.status = status || "Active";
+      this.accountNumber = accountNumber;
+      this.transitNumber = transitNumber;
+      this.institutionNumber = institutionNumber;
+      this.bankName = bankName;
+      this.interacId = interacId;
+      this.sin = sin;
+      this.taxCode = taxCode;
+      this.workPermitDetails = workPermitDetails || null;
+      this.prDetails = prDetails || null;
+      this.citizenshipId = citizenshipId || null;
+      this.maritalStatus = maritalStatus;
+      this.emergencyContactName = emergencyContactName;
+      this.emergencyContactNumber = emergencyContactNumber;
+      this.emergencyContactRelation = emergencyContactRelation;
+      this.repManagerRef = repManagerRef || null;
+      this.healthCardNo = healthCardNo || "";
+      this.familyPractitionerName = familyPractitionerName || "";
+      this.practitionerClinicName = practitionerClinicName || "";
+      this.practitionerName = practitionerName || "";
+      this.logId = logId;
+      this.addresses = addresses; 
+    }
+  
+    static validate(requestBody) {
+      const errors = [];
+  
+      // validating employee inputs
+      if (!requestBody.firstName || requestBody.firstName.length < 3)
+        errors.push("First name must be at least 3 characters.");
+      if (!requestBody.middleName || requestBody.middleName.length < 3)
+        errors.push("Middle name must be at least 3 characters.");
+      if (!requestBody.lastName || requestBody.lastName.length < 3)
+        errors.push("Last name must be at least 3 characters.");
+      if (!requestBody.email || !/.+@.+\..+/.test(requestBody.email))
+        errors.push("Invalid email format.");
+      if (!requestBody.contactNumber || !/^\+?1?\d{10,15}$/.test(requestBody.contactNumber))
+        errors.push("Invalid contact number format.");
+      if (!requestBody.dateOfJoin)
+        errors.push("Date of Joining is required.");
+      if (!requestBody.departmentId)
+        errors.push("Department ID is required.");
+      if (!requestBody.roleRef)
+        errors.push("Role Reference is required.");
+      if (!requestBody.employmentType || !["Full-Time", "Part-Time", "Contract", "Internship"].includes(requestBody.employmentType))
+        errors.push("Invalid employment type.");
+      if (!requestBody.sin || !/^\d{3}-\d{3}-\d{3}$/.test(requestBody.sin))
+        errors.push("SIN must follow the format XXX-XXX-XXX.");
+      if (!requestBody.accountNumber)
+        errors.push("Bank account number is required.");
+      if (!requestBody.transitNumber || requestBody.transitNumber.length !== 5)
+        errors.push("Transit Number must be exactly 5 digits.");
+      if (!requestBody.institutionNumber || requestBody.institutionNumber.length !== 3)
+        errors.push("Institution Number must be exactly 3 digits.");
+      if (!requestBody.bankName)
+        errors.push("Bank Name is required.");
+      if (!requestBody.maritalStatus)
+        errors.push("Marital Status is required.");
+      if (!requestBody.emergencyContactName)
+        errors.push("Emergency contact name is required.");
+      if (!requestBody.emergencyContactNumber || !/^\d{10,15}$/.test(requestBody.emergencyContactNumber))
+        errors.push("Invalid emergency contact number format.");
+      if (!requestBody.emergencyContactRelation)
+        errors.push("Emergency contact relation is required.");
+      if (!requestBody.logId)
+        errors.push("Log ID is required.");
+  
+      // validating address inputs
+      if (!requestBody.addresses || !Array.isArray(requestBody.addresses) || requestBody.addresses.length === 0)
+        errors.push("At least one address is required.");
+  
+      if (requestBody.addresses) {
+        requestBody.addresses.forEach((address, index) => {
+          if (!address.type || !["temporary", "permanent"].includes(address.type))
+            errors.push(`Address ${index + 1}: Invalid type (must be 'temporary' or 'permanent').`);
+          if (!address.houseNo)
+            errors.push(`Address ${index + 1}: House number is required.`);
+          if (!address.street)
+            errors.push(`Address ${index + 1}: Street is required.`);
+          if (!address.city)
+            errors.push(`Address ${index + 1}: City is required.`);
+          if (!address.province)
+            errors.push(`Address ${index + 1}: Province is required.`);
+          if (!address.country)
+            errors.push(`Address ${index + 1}: Country is required.`);
+          if (!/^\d{5,6}$/.test(address.pincode))
+            errors.push(`Address ${index + 1}: Invalid pincode format.`);
+        });
+      }
+  
+      return errors.length > 0 ? errors : null;
+    }
+  }
+  
+  module.exports = EmployeeRequest;
